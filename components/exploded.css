@@ -1,0 +1,42 @@
+/* The section is tall; its view stays pinned while the scroll takes the page apart. */
+.exp { height: 800vh; }
+.exp-view { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; --tilt: 0; --e: 0; --p: 0; --fit: 1; }
+.exp-scene { position: absolute; inset: 0; perspective: 2200px; }
+
+.exp-copy { position: absolute; left: var(--pad); bottom: 44px; width: min(420px, 40vw); z-index: 4; }
+.exp-copy h1 { font-weight: 600; font-size: clamp(40px, 4.8vw, 76px); line-height: 0.95; letter-spacing: -0.05em; margin: 0 0 16px; animation: exp-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes exp-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.exp-copy > p { font-size: 18px; line-height: 1.45; margin: 0; color: var(--soft); min-height: 2.9em; }
+.exp-points { list-style: none; margin: 14px 0 0; padding: 0; }
+.exp-points li { padding: 9px 0 9px 22px; border-top: 1px solid var(--rule); font-size: 16px; line-height: 1.35; position: relative; }
+.exp-points li::before { content: ''; position: absolute; left: 0; top: 16px; width: 10px; height: 2px; background: var(--accent); }
+
+.exp-legend { list-style: none; margin: 18px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; visibility: hidden; opacity: 0; transition: opacity 0.4s ease; }
+.exp-legend[data-show='true'] { visibility: visible; opacity: 1; }
+.exp-legend button { width: 100%; min-height: 44px; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: transparent; border: 1.5px solid var(--ink); border-radius: 999px; font: inherit; font-size: 15px; font-weight: 500; color: var(--ink); cursor: pointer; }
+.exp-legend button span { font: 500 12px/1 'Geist Mono', ui-monospace, monospace; }
+.exp-legend button:hover { background: rgba(23, 24, 27, 0.06); }
+.exp-legend button[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); }
+.exp-copy[data-step='4'] .exp-legend { display: none; }
+.exp-cta { display: none; margin-top: 18px; }
+.exp-cta[data-show='true'] { display: inline-flex; }
+
+.exp-count { position: absolute; right: var(--pad); bottom: 36px; margin: 0; font-weight: 600; font-size: 64px; letter-spacing: -0.05em; line-height: 1; }
+.exp-count span { font-size: 18px; letter-spacing: 0; color: #5a5c63; margin-left: 4px; }
+.exp-rail { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--accent); transform-origin: left; transform: scaleX(var(--p)); }
+
+@media (max-width: 860px) {
+  .exp-copy { width: auto; right: var(--pad); bottom: 22px; }
+  .exp-copy h1 { font-size: 34px; margin-bottom: 8px; }
+  .exp-copy > p { font-size: 15px; min-height: 2.9em; }
+  .exp-points { margin-top: 8px; }
+  .exp-points li { padding: 6px 0 6px 20px; font-size: 14px; }
+  .exp-points li::before { top: 13px; }
+  .exp-legend { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 10px; gap: 6px; }
+  .exp-legend button { padding: 0 8px; font-size: 13px; gap: 6px; }
+  .exp-count { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .exp-copy h1 { animation: none; }
+  .exp-legend { transition: none; }
+}
