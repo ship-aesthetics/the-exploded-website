@@ -1,0 +1,49 @@
+/* A real stack of sheets in 3D. --tilt turns it on its side, --e pulls the sheets apart, --fit scales it to the window. */
+.sheet { position: absolute; left: 63%; top: 50%; margin: -400px 0 0 -310px; width: 620px; height: 800px; transform-style: preserve-3d; transform: scale(var(--fit)) rotateX(calc(var(--tilt) * 60deg)) rotateZ(calc(var(--tilt) * -38deg)) translateZ(calc(var(--e) * -190px)); }
+.ply { position: absolute; inset: 0; transform: translateZ(calc(var(--e) * var(--i) * 78px)); transition: opacity 0.35s ease; }
+.ply-base { background: #f6f7f9; border-radius: 14px; box-shadow: 0 60px 90px -50px rgba(23, 24, 27, 0.55), 0 0 0 1px rgba(23, 24, 27, 0.14); }
+.tag { position: absolute; left: calc(100% + 18px); top: 12px; white-space: nowrap; font: 500 22px/1 'Geist Mono', ui-monospace, monospace; color: #17181b; opacity: calc((var(--e) - 0.55) * 3); }
+.tag::before { content: ''; position: absolute; right: calc(100% + 4px); top: 50%; width: 12px; height: 1px; background: #17181b; }
+
+.ply-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 12px; padding: 0 36px; opacity: calc(0.12 + var(--e) * 0.88); }
+.ply-grid i { background: rgba(255, 91, 31, 0.16); border-left: 1px solid rgba(255, 91, 31, 0.5); border-right: 1px solid rgba(255, 91, 31, 0.5); }
+.ply-images img { position: absolute; object-fit: cover; border-radius: 10px; }
+.im-a { left: 330px; top: 96px; width: 254px; height: 150px; }
+.im-b { left: 36px; top: 470px; width: 262px; height: 294px; }
+.im-c { left: 322px; top: 470px; width: 262px; height: 294px; }
+.ply-type span { position: absolute; color: #17181b; }
+.t-logo { left: 36px; top: 30px; font-weight: 700; font-size: 20px; letter-spacing: -0.03em; }
+.t-nav { right: 36px; top: 34px; font-size: 14px; }
+.t-h { left: 36px; top: 96px; width: 280px; font-weight: 600; font-size: 46px; line-height: 0.98; letter-spacing: -0.045em; }
+.t-p { left: 36px; top: 296px; width: 250px; font-size: 16px; line-height: 1.4; color: #3c3e44 !important; }
+.t-s { left: 330px; top: 262px; font-size: 13px; color: #5a5c63 !important; }
+.ply-ui span { position: absolute; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 15px; border-radius: 999px; }
+.u-a { left: 36px; top: 384px; width: 132px; height: 46px; background: #ff5b1f; color: #17181b; }
+.u-b { left: 178px; top: 384px; width: 132px; height: 46px; border: 1.5px solid #17181b; color: #17181b; }
+.u-c { right: 36px; top: 440px; width: 46px; height: 8px; background: #17181b; }
+.ply-motion svg { width: 100%; height: 100%; fill: none; stroke: #1f3bff; stroke-width: 2.5; opacity: var(--e); }
+.ply-motion circle { fill: #1f3bff; }
+.ply-code pre { position: absolute; left: 36px; right: 36px; top: 470px; margin: 0; font: 500 15px/1.5 'Geist Mono', ui-monospace, monospace; color: #17181b; background: rgba(246, 247, 249, 0.86); padding: 18px; border-radius: 10px; border: 1px solid rgba(23, 24, 27, 0.25); opacity: var(--e); }
+
+/* wireframe: fills go, outlines stay */
+.ply-base, .ply-images img, .u-a, .t-h { transition: background-color 0.5s ease, opacity 0.5s ease, box-shadow 0.5s ease, color 0.5s ease; }
+[data-wire='true'] .ply-base { background: transparent; box-shadow: 0 0 0 1.5px #17181b; }
+[data-wire='true'] .ply-images img { opacity: 0; }
+[data-wire='true'] .ply-images::before, [data-wire='true'] .ply-images::after { content: ''; position: absolute; left: 36px; top: 470px; width: 262px; height: 294px; border: 1.5px solid #17181b; border-radius: 10px; background: linear-gradient(to top right, transparent calc(50% - 1px), #17181b calc(50% - 1px), #17181b calc(50% + 1px), transparent calc(50% + 1px)); }
+[data-wire='true'] .ply-images::after { left: 322px; }
+[data-wire='true'] .u-a { background: transparent; border: 1.5px solid #17181b; }
+[data-wire='true'] .ply-code pre { background: transparent; }
+[data-wire='true'] .t-h { -webkit-text-stroke: 1px #17181b; color: transparent; }
+
+/* picking a layer dims the rest */
+[data-pick] .ply:not(.ply-base) { opacity: 0.1; }
+[data-pick='grid'] .ply[data-l='grid'], [data-pick='images'] .ply[data-l='images'], [data-pick='type'] .ply[data-l='type'], [data-pick='ui'] .ply[data-l='ui'], [data-pick='motion'] .ply[data-l='motion'], [data-pick='code'] .ply[data-l='code'] { opacity: 1; }
+[data-pick='motion'] .ply-motion svg, [data-pick='code'] .ply-code pre { opacity: 1; }
+
+@media (max-width: 860px) {
+  .sheet { left: 50%; top: 74px; margin-top: 0; transform-origin: 50% 0; transform: translateY(calc(var(--e) * 26vh)) scale(calc(var(--fit) * (1 - var(--e) * 0.14))) rotateX(calc(var(--tilt) * 60deg)) rotateZ(calc(var(--tilt) * -38deg)) translateZ(calc(var(--e) * -190px)); }
+  .tag { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ply, .ply-base, .ply-images img, .u-a, .t-h { transition: none; }
+}
